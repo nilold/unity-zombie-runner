@@ -26,7 +26,13 @@ public class Player : MonoBehaviour {
 	void Update ()
     {
         CheckReSpawn();
-        if(Input.GetButton("Helicopter")){
+        CheckCallHelicopter();
+    }
+
+    private void CheckCallHelicopter()
+    {
+        if (Input.GetButton("Helicopter"))
+        {
             audioSource.PlayOneShot(callHelipterSound);
         }
     }
