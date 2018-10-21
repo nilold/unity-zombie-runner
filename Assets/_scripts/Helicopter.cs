@@ -4,26 +4,24 @@ using UnityEngine;
 
 public class Helicopter : MonoBehaviour {
 
-    private bool called = true;
+    private bool called = false;
     private AudioSource audioSource;
+    private Rigidbody rigidbody;
 
 
-	// Use this for initialization
 	void Start () {
         audioSource = GetComponent<AudioSource>();
+        rigidbody = GetComponent<Rigidbody>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-        CheckCallHelicopter();
-	}
 
-    private void CheckCallHelicopter()
+    void OnDispatchHelicopter()
     {
-        if (Input.GetButton("Helicopter"))
+        if (!called)
         {
             called = true;
             audioSource.Play();
+            rigidbody.velocity = new Vector3(0, 0, 50f);
         }
     }
 }

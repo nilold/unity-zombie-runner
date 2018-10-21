@@ -4,36 +4,46 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
+    //spawn
     [SerializeField] GameObject spawnPoints;
     [SerializeField] public bool respawn = false;
     private Transform[] spawnPointsList;
 
-    private AudioSource audioSource;
+    private Helicopter helicopter;
+    private ClearArea clearArea;
 
-    [SerializeField] AudioClip callHelipterSound;
-
-    private void ReSpawn(){
-        int index = Random.Range(0, spawnPointsList.Length); //max value is exclusive
-        gameObject.transform.position = spawnPointsList[index].position;
+	void Start ()
+    {
+        spawnPointsList = spawnPoints.GetComponentsInChildren<Transform>();
+        helicopter = FindObjectOfType<Helicopter>();
+        clearArea = GetComponentInChildren<ClearArea>();
+        ReSpawn();
     }
 
-	void Start () {
-        audioSource = GetComponent<AudioSource>();
-        spawnPointsList = spawnPoints.GetComponentsInChildren<Transform>();
-        ReSpawn();
-	}
-	
-	void Update ()
+
+    void Update ()
     {
         CheckReSpawn();
         CheckCallHelicopter();
     }
 
+    private void ReSpawn()
+    {
+        int index = Random.Range(0, spawnPointsList.Length); //max value is exclusive
+        gameObject.transform.position = spawnPointsList[index].position;
+
+    }
+
+
     private void CheckCallHelicopter()
     {
         if (Input.GetButton("Helicopter"))
         {
-            audioSource.PlayOneShot(callHelipterSound);
+            if (clearArea.isClear){
+                SendMessageUpwards("OnMakeInitialHeliCall");
+                //TODO:deploy flare
+            }
+
         }
     }
 
@@ -45,4 +55,10 @@ public class Player : MonoBehaviour {
             respawn = false;
         }
     }
+
+    private void NotifyAreaIsClear(){
+        BroadcastMessage("OnFindClearArea");
+    }
+
+
 }
