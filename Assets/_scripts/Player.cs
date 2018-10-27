@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
 
     private Helicopter helicopter;
     private ClearArea clearArea;
+    [SerializeField] GameObject landingAreaPrefab;
 
 	void Start ()
     {
@@ -41,7 +42,7 @@ public class Player : MonoBehaviour {
         {
             if (clearArea.isClear){
                 SendMessageUpwards("OnMakeInitialHeliCall");
-                //TODO:deploy flare
+                Instantiate(landingAreaPrefab, transform.position, transform.rotation);
             }
 
         }
